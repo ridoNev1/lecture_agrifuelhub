@@ -48,13 +48,19 @@ const OrderSummary = () => {
 
   const sendToWhatsAppPegawai = () => {
     const phoneNumber = "6281217873551";
+
+    const orderId = detailData?.order_id || "-";
+    const item = detailData?.item || "-";
+    const alamat = detailData?.alamat || "-";
+    const tanggal = detailData?.tanggal_pengangkutan || "Belum Ditentukan";
+
     const templateMessage = `
-  Halo, saya ingin membuat penugasan untuk order berikut:%0A
-  Order ID : ${detailData?.order_id}%0A
-  Jenis Paket : ${detailData?.item}%0A
-  Alamat : ${detailData?.alamat}%0A
-  Tanggal : ${detailData?.tanggal_pengangkutan}%0A
-  Gmaps Lokasi : https://maps.app.goo.gl/g5KbqTMXhq7GAq2X6
+  Halo, saya ingin membuat penugasan untuk order berikut:\n
+  Order ID: ${orderId}\n
+  Jenis Paket: ${item}\n
+  Alamat: ${alamat}\n
+  Tanggal: ${tanggal}\n
+  Gmaps Lokasi: https://maps.app.goo.gl/g5KbqTMXhq7GAq2X6
     `;
 
     const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
@@ -62,6 +68,7 @@ const OrderSummary = () => {
     )}`;
     window.open(whatsappURL, "_blank");
   };
+
   return (
     <Layout>
       <div className="bg-gray-100 min-h-screen">
