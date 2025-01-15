@@ -7,17 +7,17 @@ export default function Home() {
     <div className="bg-slate-600">
       <div className="max-w-[412px] mx-auto bg-white min-h-screen">
         <div
-          className="min-h-screen bg-contain"
+          className="min-h-screen bg-cover bg-center"
           style={{
             backgroundImage: `url(${BackgroundLogin})`,
           }}
         >
           <div className="bg-black/40 min-h-screen flex flex-col justify-center items-center p-6">
             <h1 className="text-4xl text-white font-bold text-center">
-              Welcome to AGRIHUB
+              Welcome to Agrifuelhub
             </h1>
             <Link to="/login">
-              <Button className="mt-10 w-full bg-blue-500 hover:bg-blue-400">
+              <Button className="mt-10 w-full bg-green-500 hover:bg-green-400">
                 Login
               </Button>
             </Link>

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
   AgriculturalWaste,
+  formatRupiah,
   getUserDetails,
   Item,
   StatusBadge,
@@ -20,7 +21,7 @@ const GOOGLE_MAPS_API_KEY = "";
 
 const OrderSummary = () => {
   const userDetails = getUserDetails();
-
+  const navigate = useNavigate();
   const [detailData, setDetailData] = useState<AgriculturalWaste>({
     order_id: "",
     item: Item.BATANG_JAGUNG,
@@ -32,8 +33,6 @@ const OrderSummary = () => {
     user_name: "Petani Jamal",
     userId: 1,
   });
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const savedData = localStorage.getItem("order-detail");
@@ -82,30 +81,30 @@ const OrderSummary = () => {
             </span>
           </div>
           <div className="rounded-md overflow-hidden">
-            <div className="w-full grid grid-cols-2 gap-4 bg-white py-2 px-4">
+            <div className="w-full grid grid-cols-2 items-center gap-4 bg-white py-2 px-4">
               <Label className="text-gray-700 leading-none">Order Id</Label>
               <span className="text-[#242424] flex items-center font-medium space-x-1">
                 <MdConfirmationNumber />
                 <span className="font-bold">{detailData?.order_id}</span>
               </span>
             </div>
-            <div className="w-full grid grid-cols-2 gap-4 bg-gray-200 py-2 px-4">
+            <div className="w-full grid grid-cols-2 items-center gap-4 bg-gray-200 py-2 px-4">
               <Label className="text-gray-700 leading-none">Item</Label>
               <p className="text-ellipsis line-clamp-3">{detailData?.item}</p>
             </div>
-            <div className="w-full grid grid-cols-2 gap-4 bg-white py-2 px-4">
+            <div className="w-full grid grid-cols-2 items-center gap-4 bg-white py-2 px-4">
               <Label className="text-gray-700 leading-none">Jumlah Paket</Label>
               <p className="text-ellipsis line-clamp-3">
                 {detailData?.jumlah_karung} Paket
               </p>
             </div>
-            <div className="w-full grid grid-cols-2 gap-4 bg-white py-2 px-4">
+            <div className="w-full grid grid-cols-2 items-center gap-4 bg-white py-2 px-4">
               <Label className="text-gray-700 leading-none">Ukuran Paket</Label>
               <p className="text-ellipsis line-clamp-3">
                 {detailData?.ukuran_karung}
               </p>
             </div>
-            <div className="w-full grid grid-cols-2 gap-4 bg-white py-2 px-4">
+            <div className="w-full grid grid-cols-2 items-center gap-4 bg-white py-2 px-4">
               <Label className="text-gray-700 leading-none">
                 Berat per Paket
               </Label>
@@ -113,7 +112,7 @@ const OrderSummary = () => {
                 {detailData?.berat_per_karung_kg} kg
               </p>
             </div>
-            <div className="w-full grid grid-cols-2 gap-4 bg-white py-2 px-4">
+            <div className="w-full grid grid-cols-2 items-center gap-4 bg-white py-2 px-4">
               <Label className="text-gray-700 leading-none">Total Paket</Label>
               <p className="text-ellipsis line-clamp-3">
                 {(detailData?.berat_per_karung_kg ?? 0) *
@@ -121,22 +120,20 @@ const OrderSummary = () => {
                 kg
               </p>
             </div>
-            <div className="w-full grid grid-cols-2 gap-4 bg-gray-200 py-2 px-4">
+            <div className="w-full grid grid-cols-2 items-center gap-4 bg-gray-200 py-2 px-4">
               <Label className="text-gray-700 leading-none">Alamat</Label>
               <p className="text-ellipsis line-clamp-3">{detailData?.alamat}</p>
             </div>
-            <div className="w-full grid grid-cols-2 gap-4 bg-white py-2 px-4">
+            <div className="w-full grid grid-cols-2 items-center gap-4 bg-white py-2 px-4">
               <div>
-                <Label className="text-gray-700 leading-none">
-                  Pilihan Tanggal
-                </Label>
+                <Label className="text-gray-700 leading-none">Tanggal</Label>
                 <br />
                 <span className="text-sm font-medium text-gray-400 leading-[0]">
                   (
                   {detailData?.tanggal_penjualan
                     ? "tanggal penjualan"
                     : detailData?.tanggal_manufacturing
-                    ? "tanggal manufacturing"
+                    ? "mulai produksi"
                     : detailData?.tanggal_pengangkutan
                     ? "tanggal pengangkutan"
                     : ""}
@@ -152,7 +149,7 @@ const OrderSummary = () => {
               </p>
             </div>
             {userDetails?.user_level === 2 && (
-              <div className="w-full grid grid-cols-2 gap-4 bg-gray-200 py-2 px-4">
+              <div className="w-full grid grid-cols-2 items-center gap-4 bg-gray-200 py-2 px-4">
                 <Label className="text-gray-700 leading-none">
                   Di Buat Oleh
                 </Label>
@@ -161,32 +158,160 @@ const OrderSummary = () => {
                 </p>
               </div>
             )}
-            <div className="w-full bg-white py-2 px-4">
-              <div className="mb-4 flex justify-between items-center">
-                <Label className="text-gray-700 leading-none">
-                  Detail Lokasi
-                </Label>
-                <span className="text-blue-500 cursor-pointer font-medium">
-                  Lihat Maps
-                </span>
+            {detailData?.status === 1 && (
+              <div className="w-full bg-white py-2 px-4">
+                <div className="mb-4 flex justify-between items-center">
+                  <Label className="text-gray-700 leading-none">
+                    Detail Lokasi
+                  </Label>
+                  <span className="text-blue-500 cursor-pointer font-medium">
+                    Lihat Maps
+                  </span>
+                </div>
+                <div className="w-full h-[200px] mb-4">
+                  <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
+                    <Map
+                      style={{ borderRadius: "20px" }}
+                      defaultZoom={18}
+                      defaultCenter={markerLocation}
+                      gestureHandling={"greedy"}
+                      disableDefaultUI
+                    >
+                      <Marker position={markerLocation} />
+                    </Map>
+                  </APIProvider>
+                </div>
               </div>
-              <div className="w-full h-[200px] mb-4">
-                <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
-                  <Map
-                    style={{ borderRadius: "20px" }}
-                    defaultZoom={18}
-                    defaultCenter={markerLocation}
-                    gestureHandling={"greedy"}
-                    disableDefaultUI
-                  >
-                    <Marker position={markerLocation} />
-                  </Map>
-                </APIProvider>
+            )}
+          </div>
+          {detailData?.status === 3 && (
+            <div className="mt-4">
+              <div className="rounded-md overflow-hidden">
+                <div className="w-full grid grid-cols-2 items-center gap-4 bg-white py-2 px-4">
+                  <Label className="text-gray-700 leading-none">
+                    Hasil Produksi
+                  </Label>
+                  <span className="text-[#242424] flex items-center space-x-1">
+                    <p className="text-ellipsis line-clamp-3">
+                      {detailData.resultProduction}
+                    </p>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
+          {userDetails?.user_level === 2 && detailData?.status === 7 && (
+            <div className="mt-4">
+              <h2 className="font-bold">Detail Cost</h2>
+              <div className="mt-4">
+                <div className="rounded-md overflow-hidden">
+                  <div className="w-full grid grid-cols-2 items-center gap-4 bg-white py-2 px-4">
+                    <Label className="text-gray-700 leading-none">
+                      Jarak Pengangkutan
+                    </Label>
+                    <span className="text-[#242424] flex items-center space-x-1">
+                      <p className="text-ellipsis line-clamp-3">
+                        {detailData.jarakPengangkutan} KM
+                      </p>
+                    </span>
+                  </div>
+                  <div className="w-full grid grid-cols-2 items-center gap-4 bg-gray-200 py-2 px-4">
+                    <Label className="text-gray-700 leading-none">
+                      Jarak Pengiriman
+                    </Label>
+                    <p className="text-ellipsis line-clamp-3">
+                      {detailData.jarakPengiriman} KM
+                    </p>
+                  </div>
+                  <div className="w-full grid grid-cols-2 items-center gap-4 bg-white py-2 px-4">
+                    <Label className="text-gray-700 leading-none">
+                      Harga per Item
+                    </Label>
+                    <span className="text-[#242424] flex items-center space-x-1">
+                      <p className="text-ellipsis line-clamp-3">
+                        {formatRupiah(detailData.hargaItem ?? 0)}
+                      </p>
+                    </span>
+                  </div>
+                  <div className="w-full grid grid-cols-2 items-center gap-4 bg-gray-200 py-2 px-4">
+                    <Label className="text-gray-700 leading-none">
+                      Biaya Pengiriman
+                    </Label>
+                    <p className="text-ellipsis line-clamp-3">
+                      {formatRupiah(detailData.biayaPengiriman ?? 0)}
+                    </p>
+                  </div>
+                  <div className="w-full grid grid-cols-2 items-center gap-4 bg-white py-2 px-4">
+                    <Label className="text-gray-700 leading-none">
+                      Biaya Penyimpanan
+                    </Label>
+                    <span className="text-[#242424] flex items-center space-x-1">
+                      <p className="text-ellipsis line-clamp-3">
+                        {formatRupiah(detailData.biayaPenyimpanan ?? 0)}
+                      </p>
+                    </span>
+                  </div>
+                  <div className="w-full grid grid-cols-2 items-center gap-4 bg-gray-200 py-2 px-4">
+                    <Label className="text-gray-700 leading-none">
+                      Biaya Pemrosesan
+                    </Label>
+                    <p className="text-ellipsis line-clamp-3">
+                      {formatRupiah(detailData.biayaPemrosesan ?? 0)}
+                    </p>
+                  </div>
+                  <div className="w-full grid grid-cols-2 items-center gap-4 bg-white py-2 px-4">
+                    <Label className="text-gray-700 leading-none">
+                      Total Cost
+                    </Label>
+                    <span className="text-[#242424] flex items-center space-x-1">
+                      <p className="text-ellipsis line-clamp-3">
+                        {formatRupiah(detailData.totalCost ?? 0)}
+                      </p>
+                    </span>
+                  </div>
+                  <div className="w-full grid grid-cols-2 items-center gap-4 bg-white py-2 px-4">
+                    <Label className="text-gray-700 leading-none">
+                      Harga Jual
+                    </Label>
+                    <span className="text-[#242424] flex items-center space-x-1">
+                      <p className="text-ellipsis line-clamp-3">
+                        {formatRupiah(detailData.hargaJual ?? 0)}
+                      </p>
+                    </span>
+                  </div>
+                  <div className="w-full grid grid-cols-2 items-center gap-4 bg-gray-200 py-2 px-4">
+                    <Label className="text-gray-700 leading-none">Margin</Label>
+                    <p className="text-ellipsis line-clamp-3">
+                      {formatRupiah(detailData.margin ?? 0)}
+                    </p>
+                  </div>
+                  <div className="w-full grid grid-cols-2 items-center gap-4 bg-white py-2 px-4">
+                    <Label className="text-gray-700 leading-none">
+                      Pembayaran Petani
+                    </Label>
+                    <span className="text-[#242424] flex items-center space-x-1">
+                      <p className="text-ellipsis line-clamp-3">
+                        {formatRupiah(detailData.pembayaranPetani ?? 0)}
+                      </p>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="mt-6">
-            {userDetails?.user_level === 2 && (
+            {userDetails?.user_level === 2 && detailData?.status === 2 && (
+              <Button
+                className="w-full bg-green-500 hover:bg-green-400"
+                onClick={() => {
+                  navigate("/cost-input");
+                }}
+              >
+                Submit Cost
+              </Button>
+            )}
+            {userDetails?.user_level === 2 && detailData?.status === 1 && (
               <Button
                 className="w-full bg-green-500 hover:bg-green-400"
                 onClick={() => {
@@ -194,6 +319,16 @@ const OrderSummary = () => {
                 }}
               >
                 Buat Penugasan
+              </Button>
+            )}
+            {userDetails?.user_level === 2 && detailData?.status === 7 && (
+              <Button
+                className="w-full bg-green-500 hover:bg-green-400"
+                onClick={() => {
+                  navigate("/complete-production");
+                }}
+              >
+                Complete
               </Button>
             )}
             <Button

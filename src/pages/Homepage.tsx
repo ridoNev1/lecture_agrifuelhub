@@ -20,10 +20,6 @@ const Homepage = () => {
   const [dataSet, setDataSet] = useState<AgriculturalWaste[]>([]);
 
   useEffect(() => {
-    if (!userDetails) navigate("/login");
-  }, [navigate, userDetails]);
-
-  useEffect(() => {
     const savedData = localStorage.getItem("mainData");
     if (!savedData)
       localStorage.setItem("mainData", JSON.stringify(agriculturalWastes));
@@ -34,7 +30,6 @@ const Homepage = () => {
     if (savedData) setDataSet(JSON.parse(savedData));
   }, []);
 
-  console.log(dataSet);
   return (
     <Layout>
       <>

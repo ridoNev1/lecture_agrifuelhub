@@ -2,8 +2,14 @@ import BottomNav from "@/components/layout/BottomNav";
 import Layout from "@/components/layout/Layout";
 import Navbar from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -13,12 +19,16 @@ import {
 } from "@/components/ui/select";
 import {
   AgriculturalWaste,
+  formatDate,
   getItemOptions,
   getUkuranKarungOptions,
   Item,
   Status,
   UkuranKarung,
 } from "@/enum";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -58,7 +68,7 @@ const ConfirmPickup = () => {
 
   return (
     <Layout>
-      <div className="bg-gray-100 min-h-screen">
+      <div className="min-h-screen">
         <Navbar />
         <div className="py-24 px-6">
           <h2 className="font-bold text-lg">Konfirmasi Kedatangan Barang</h2>
@@ -150,13 +160,53 @@ const ConfirmPickup = () => {
                 onChange={onChange("berat_per_karung_kg")}
               />
             </div>
+            <div className="w-full mt-3">
+              <div className="mb-2">
+                <Label htmlFor="tanggal_produksi">Tanggal Mulai Produksi</Label>
+              </div>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !data.tanggal_manufacturing && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {data.tanggal_manufacturing ? (
+                      format(data.tanggal_manufacturing, "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={
+                      data.tanggal_manufacturing
+                        ? new Date(data.tanggal_manufacturing)
+                        : undefined
+                    }
+                    onSelect={(date) =>
+                      setData({
+                        ...data,
+                        tanggal_manufacturing: formatDate(date),
+                      })
+                    }
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
           <Button
             onClick={() => {
               const dataMist = {
                 ...dataSet.find((el) => el.order_id === data.order_id),
                 ...filterEmptyValues(data),
-                status: 2,
+                status: Status.READY_FOR_PRODUCTION,
               };
               const mergedData = dataSet.filter(
                 (el) => el.order_id !== dataMist.order_id

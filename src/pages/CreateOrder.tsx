@@ -122,7 +122,7 @@ const CreateOrder = () => {
             </div>
             <div className="w-full mt-3">
               <div className="mb-2">
-                <Label htmlFor="berat_paket">Berat per Paket(KG)</Label>
+                <Label htmlFor="berat_paket">Berat per Paket (KG)</Label>
               </div>
               <Input
                 type="number"
@@ -135,7 +135,7 @@ const CreateOrder = () => {
 
             <div className="w-full mt-3">
               <div className="mb-2">
-                <Label htmlFor="address">Tanggal Pengangkutan</Label>
+                <Label htmlFor="tanggal_produksi">Tanggal Pengangkutan</Label>
               </div>
               <Popover>
                 <PopoverTrigger asChild>

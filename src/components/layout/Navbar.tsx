@@ -18,9 +18,9 @@ const Navbar: React.FC<INavbar> = ({ isNeedSearch, onSearch }) => {
   };
 
   return (
-    <nav className="bg-white shadow-md fixed w-full max-w-[412px] py-4 pr-6 pl-2 flex items-center justify-between">
+    <nav className="bg-white shadow-md fixed w-full max-w-[412px] px-6 py-4 flex items-center justify-between">
       <div className="flex items-center justify-center h-10">
-        <img src={MainLogo} alt="navigation-bar-images" className="w-24 h-24" />
+        <img src={MainLogo} alt="navigation-bar-images" className="w-10 h-12" />
       </div>
       <div className="relative">
         {isNeedSearch && (

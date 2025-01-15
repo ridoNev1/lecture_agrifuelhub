@@ -7,6 +7,8 @@ import OrderSummary from "./OrderSummary";
 import CreateOrder from "./CreateOrder";
 import Manufacture from "./Manufacture";
 import ConfirmPickup from "./ConfirmPickup";
+import CostInput from "./CostInputPage";
+import CompleteProduction from "./CompleteProduction";
 
 export {
   SplashScreen,
@@ -18,4 +20,6 @@ export {
   CreateOrder,
   Manufacture,
   ConfirmPickup,
+  CostInput,
+  CompleteProduction,
 };

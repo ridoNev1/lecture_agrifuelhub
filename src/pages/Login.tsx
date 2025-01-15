@@ -118,9 +118,9 @@ const Login = () => {
           </Button>
         </div>
 
-        <div className="mt-8 flex justify-center items-center flex-col">
-          <img src={MainLogo} alt="main-logo-images" className="w-52 h-52" />
-          <p className="-mt-8 font-bold text-[#397007] poppins-text">
+        <div className="mt-20 flex justify-center items-center flex-col">
+          <img src={MainLogo} alt="main-logo-images" className="w-28 h-36" />
+          <p className="mt-2 font-bold text-[#397007] poppins-text">
             Ubah Limbah Jadi Uang
           </p>
         </div>
