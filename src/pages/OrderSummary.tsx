@@ -49,20 +49,19 @@ const OrderSummary = () => {
   const sendToWhatsAppPegawai = () => {
     const phoneNumber = "6281217873551";
     const templateMessage = `
-  Halo, saya ingin membuat penugasan untuk order berikut:
-  Order ID : ${detailData?.order_id}
-  Jenis Paket : ${detailData?.item}
-  Alamat : ${detailData?.alamat}
-  Tanggal : ${detailData?.tanggal_pengangkutan}
+  Halo, saya ingin membuat penugasan untuk order berikut:%0A
+  Order ID : ${detailData?.order_id}%0A
+  Jenis Paket : ${detailData?.item}%0A
+  Alamat : ${detailData?.alamat}%0A
+  Tanggal : ${detailData?.tanggal_pengangkutan}%0A
   Gmaps Lokasi : https://maps.app.goo.gl/g5KbqTMXhq7GAq2X6
-  Catatan : No Request
     `;
 
-    const encodedMessage = encodeURIComponent(templateMessage.trim());
-    const waLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-    window.open(waLink, "_blank");
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      templateMessage
+    )}`;
+    window.open(whatsappURL, "_blank");
   };
-
   return (
     <Layout>
       <div className="bg-gray-100 min-h-screen">
