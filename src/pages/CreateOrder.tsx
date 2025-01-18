@@ -45,6 +45,7 @@ const CreateOrder = () => {
     tanggal_pengangkutan: "",
     user_name: "Petani Jamal",
     userId: 1,
+    billingStatus: 1,
   });
 
   const onChange =

@@ -38,7 +38,7 @@ const StatusBadge: Record<number, StatusBadgeItem> = {
     color: "bg-blue-500 text-white",
   },
   [Status.READY_FOR_BILLING]: {
-    label: "Done",
+    label: "Ready for Billing",
     color: "bg-green-500 text-white",
   },
   [Status.DONE]: {
@@ -70,6 +70,7 @@ export interface AgriculturalWaste {
   jarakPengangkutan?: number;
   jarakPengiriman?: number;
   totalCost?: number;
+  billingStatus: Status;
   resultProduction?: string;
 }
 
@@ -99,6 +100,7 @@ const agriculturalWastes: AgriculturalWaste[] = [
     ukuran_karung: UkuranKarung.BESAR,
     berat_per_karung_kg: 50,
     status: Status.WAITING_FOR_PICKUP,
+    billingStatus: Status.WAITING_FOR_PICKUP,
     alamat: "Desa Sukamaju, Kec. Cugenang, Kabupaten Cianjur, Jawa Barat 43291",
     tanggal_pengangkutan: formatDate(addDays(baseDate, 0)),
   },
@@ -111,6 +113,7 @@ const agriculturalWastes: AgriculturalWaste[] = [
     ukuran_karung: UkuranKarung.SEDANG,
     berat_per_karung_kg: 50,
     status: Status.WAITING_FOR_PICKUP,
+    billingStatus: Status.WAITING_FOR_PICKUP,
     alamat:
       "Desa Bojong, Kec. Karangtengah, Kabupaten Cianjur, Jawa Barat 43292",
     tanggal_manufacturing: formatDate(addDays(baseDate, 1)),
@@ -124,6 +127,7 @@ const agriculturalWastes: AgriculturalWaste[] = [
     ukuran_karung: UkuranKarung.KECIL,
     berat_per_karung_kg: 45,
     status: Status.WAITING_FOR_PICKUP,
+    billingStatus: Status.WAITING_FOR_PICKUP,
     alamat: "Desa Nagrak, Kec. Cianjur, Kabupaten Cianjur, Jawa Barat 43293",
     tanggal_penjualan: formatDate(addDays(baseDate, 2)),
   },
@@ -136,6 +140,7 @@ const agriculturalWastes: AgriculturalWaste[] = [
     ukuran_karung: UkuranKarung.SEDANG,
     berat_per_karung_kg: 55,
     status: Status.WAITING_FOR_PICKUP,
+    billingStatus: Status.WAITING_FOR_PICKUP,
     alamat:
       "Desa Sindanglaya, Kec. Cipanas, Kabupaten Cianjur, Jawa Barat 43294",
     tanggal_penjualan: formatDate(addDays(baseDate, 3)),
@@ -149,6 +154,7 @@ const agriculturalWastes: AgriculturalWaste[] = [
     ukuran_karung: UkuranKarung.KECIL,
     berat_per_karung_kg: 55,
     status: Status.WAITING_FOR_PICKUP,
+    billingStatus: Status.WAITING_FOR_PICKUP,
     alamat: "Desa Cibodas, Kec. Pacet, Kabupaten Cianjur, Jawa Barat 43295",
     tanggal_pengangkutan: formatDate(addDays(baseDate, 4)),
   },
@@ -161,6 +167,7 @@ const agriculturalWastes: AgriculturalWaste[] = [
     ukuran_karung: UkuranKarung.SEDANG,
     berat_per_karung_kg: 47.5,
     status: Status.WAITING_FOR_PICKUP,
+    billingStatus: Status.WAITING_FOR_PICKUP,
     alamat:
       "Desa Haurwangi, Kec. Haurwangi, Kabupaten Cianjur, Jawa Barat 43296",
     tanggal_manufacturing: formatDate(addDays(baseDate, 5)),
@@ -174,6 +181,7 @@ const agriculturalWastes: AgriculturalWaste[] = [
     ukuran_karung: UkuranKarung.BESAR,
     berat_per_karung_kg: 45.7,
     status: Status.WAITING_FOR_PICKUP,
+    billingStatus: Status.WAITING_FOR_PICKUP,
     alamat: "Desa Ciputri, Kec. Pacet, Kabupaten Cianjur, Jawa Barat 43297",
     tanggal_penjualan: formatDate(addDays(baseDate, 6)),
   },
@@ -235,7 +243,7 @@ const getUserDetails = (): UserDetails | null => {
   return null;
 };
 
-const hargaPerKg: Record<Item, number> = {
+export const hargaPerKg: Record<Item, number> = {
   [Item.TONGKOL_JAGUNG]: 500,
   [Item.SEKAM_PADI]: 300,
   [Item.SERBUK_GERGAJI]: 400,

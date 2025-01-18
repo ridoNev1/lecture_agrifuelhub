@@ -27,8 +27,20 @@ const Homepage = () => {
 
   useEffect(() => {
     const savedData = localStorage.getItem("mainData");
-    if (savedData) setDataSet(JSON.parse(savedData));
-  }, []);
+
+    if (savedData) {
+      const data: AgriculturalWaste[] = JSON.parse(savedData);
+      if (userDetails?.user_level === 1) {
+        setDataSet(
+          data?.filter(
+            (el) => el?.billingStatus === 1 || el?.billingStatus === 6
+          )
+        );
+      } else {
+        setDataSet(data);
+      }
+    }
+  }, [userDetails?.user_level]);
 
   return (
     <Layout>
@@ -87,11 +99,21 @@ const Homepage = () => {
                       </span>
                       <span
                         className={`${
-                          StatusBadge[el.status].color
+                          StatusBadge[
+                            userDetails?.user_level === 1
+                              ? el?.billingStatus
+                              : el.status
+                          ].color
                         } text-white text-xs font-semibold px-2 py-1 rounded-lg flex items-center space-x-1`}
                       >
                         <span className="font-bold">
-                          {StatusBadge[el.status].label}
+                          {
+                            StatusBadge[
+                              userDetails?.user_level === 1
+                                ? el?.billingStatus
+                                : el.status
+                            ].label
+                          }
                         </span>
                       </span>
                     </div>

@@ -32,7 +32,10 @@ const Manufacture = () => {
           <div className="mt-6">
             {dataSet?.length > 0 &&
               dataSet
-                ?.filter((el) => el?.status === 2 || el?.status === 7)
+                ?.filter(
+                  (el) =>
+                    el?.status === 2 || el?.status === 7 || el?.status === 3
+                )
                 .map((el, indx) => (
                   <div
                     key={indx}

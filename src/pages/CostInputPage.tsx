@@ -54,6 +54,7 @@ const CostInputPage = () => {
     alamat: "",
     user_name: "Petani Jamal",
     userId: 1,
+    billingStatus: 1,
   });
   const [dataSet, setDataSet] = useState<AgriculturalWaste[]>([]);
   useEffect(() => {

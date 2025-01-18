@@ -50,6 +50,7 @@ const ConfirmPickup = () => {
     tanggal_pengangkutan: "",
     user_name: "Petani Jamal",
     userId: 1,
+    billingStatus: 1,
   });
 
   const onChange =
@@ -207,6 +208,7 @@ const ConfirmPickup = () => {
                 ...dataSet.find((el) => el.order_id === data.order_id),
                 ...filterEmptyValues(data),
                 status: Status.READY_FOR_PRODUCTION,
+                billingStatus: Status.READY_FOR_BILLING,
               };
               const mergedData = dataSet.filter(
                 (el) => el.order_id !== dataMist.order_id
